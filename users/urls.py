@@ -8,4 +8,6 @@ urlpatterns = [
 	url(r'^update/$', views.updateUsers, name='update'),
 	url(r'^delete/$', views.deleteUsers, name='delete'),
 	url(r'^all/$', views.allUsers, name='all'),
+	url(r'^login/$', views.loginView, name='login'),
+	url(r'^dashboard/$', views.loginUser, name='loggedin'),
 ]

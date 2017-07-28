@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from users.models import Users
 from company.models import Company
+from users.forms import LoginForm
 
 
 def getUsers(request):
@@ -119,6 +120,11 @@ def createUsers(request):
 
 def updateUsers(request):
 	try:
+		try:
+			del request.session['userid']
+		except:
+			pass
+
 		userid = request.POST.get('id')
 		username = request.POST.get('name')
 		userjob = request.POST.get('job_title')
@@ -238,3 +244,74 @@ def allUsers(request):
 		return JsonResponse(retval)
 	except:
 		return JsonResponse({'message': 'some error'})
+
+
+def loginView(request):
+	if request.session.has_key('userid'):
+		u = Users.objects.get(pk=int(request.session['userid']))
+		allcompanylist = []
+
+		for co in Company.objects.all():
+			allcompanylist.append({
+				'id': co.id,
+				'name': co.name,
+			})
+
+		return render(request, 'loggedin.html', {
+			'id': u.id,
+			'name': u.name,
+			'job_title': u.job_title,
+			'age': u.age,
+			'gender': u.gender,
+			'company': {
+				'id': u.company_val.id,
+				'name': u.company_val.name,
+			},
+			'allcompany': allcompanylist,
+		})
+
+	return render(request, 'login.html')
+
+def loginUser(request):
+	userid = -1
+
+	if request.method == "POST":
+		MyLoginForm = LoginForm(request.POST)
+
+		if MyLoginForm.is_valid():
+			userid = MyLoginForm.cleaned_data['userid']
+			passw = MyLoginForm.cleaned_data['password']
+
+			if passw == "password":
+				try:
+					u = Users.objects.get(pk=int(userid))
+
+					allcompanylist = []
+
+					for co in Company.objects.all():
+						allcompanylist.append({
+							'id': co.id,
+							'name': co.name,
+						})
+
+					request.session['userid'] = userid
+					request.session.set_expiry(60)
+
+					return render(request, 'loggedin.html', {
+						'id': u.id,
+						'name': u.name,
+						'job_title': u.job_title,
+						'age': u.age,
+						'gender': u.gender,
+						'company': {
+							'id': u.company_val.id,
+							'name': u.company_val.name,
+						},
+						'allcompany': allcompanylist,
+					})
+				except:
+					return render(request, 'login.html')
+	else:
+		MyLoginForm = LoginForm()
+
+	return render(request, 'login.html')

@@ -1,0 +1,32 @@
+<form action="{% url 'users:update' %}" method="POST">
+	{% csrf_token %}
+	<input type="text" name="id" value="{{ id }}" hidden>
+	<br>
+	NAME: <input type="text" name="name" value="{{ name }}">
+	<br>
+	AGE: <input type="text" name="age" value="{{ age }}">
+	<br>
+	GENDER: 
+	{% if gender == "M" %}
+		<input type="radio" name="gender" value="M" checked>Male
+		<input type="radio" name="gender" value="F">Female
+	{% else %}
+		<input type="radio" name="gender" value="M">Male
+		<input type="radio" name="gender" value="F" checked>Female
+	{% endif %}
+	<br>
+	JOB TITLE: <input type="text" name="job_title" value="{{ job_title }}">
+	<br>
+	COMPANY:
+	<select name="company_id">
+		{% for c in allcompany %}
+			{% if c.id == company.id %}
+				<option value="{{ c.id }}" selected>{{ c.name }}</option>
+			{% else %}
+				<option value="{{ c.id }}">{{ c.name }}</option>
+			{% endif %}
+		{% endfor %}
+	</select>
+	<br>
+	<input type="submit" value="save and logout">
+</form>

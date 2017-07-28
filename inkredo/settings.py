@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'inkredo',
     'users',
     'company',
 ]
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'inkredo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'users/templates/users'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
