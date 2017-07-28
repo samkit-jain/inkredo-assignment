@@ -4,6 +4,8 @@ from django.shortcuts import render
 from company.models import Company
 
 
+#Get details of a single company
+#example: http://127.0.0.1:8000/company/get/?id=2
 def getCompany(request):
 	try:
 		companyid = request.GET.get('id')
@@ -23,6 +25,9 @@ def getCompany(request):
 		return JsonResponse({'message': 'some error'})
 
 
+
+#Create a single company
+#example: http://127.0.0.1:8000/company/create with just a single 'name' parameter
 def createCompany(request):
 	try:
 		companyname = request.POST.get('name')
@@ -44,6 +49,8 @@ def createCompany(request):
 		return JsonResponse({'message': 'some error'})
 
 
+#Update details of a single company
+#example: http://127.0.0.1:8000/company/update with required ID and NAME post parameters
 def updateCompany(request):
 	try:
 		companyid = request.POST.get('id')
@@ -76,6 +83,8 @@ def updateCompany(request):
 		return JsonResponse({'message': 'some error'})
 
 
+#Delete a single company
+#example: http://127.0.0.1:8000/company/delete with a required id POST parameter
 def deleteCompany(request):
 	try:
 		companyid = request.POST.get('id')
@@ -97,6 +106,8 @@ def deleteCompany(request):
 		return JsonResponse({'message': 'some error'})
 
 
+#Get details of all companies
+#example: http://127.0.0.1:8000/company/get/?id=2
 def allCompany(request):
 	try:
 		retval = {'result': []}

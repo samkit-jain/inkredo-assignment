@@ -1,6 +1,7 @@
 from django.db import models
 from company.models import Company
 
+#just a simple User model
 class Users(models.Model):
 	name = models.CharField(max_length=50)
 	job_title = models.CharField(max_length=50)
