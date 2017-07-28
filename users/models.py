@@ -5,7 +5,7 @@ class Users(models.Model):
 	name = models.CharField(max_length=50)
 	job_title = models.CharField(max_length=50)
 	age = models.IntegerField()
-	company_val = models.ForeignKey(Company)
+	company_val = models.ForeignKey(Company, on_delete=models.SET_NULL,null=True) #NOT CASCADE BECAUSE A USER CAN CHANGE COMPANY
 	
 	GENDER_CHOICES = (
 		('M', 'Male'),
@@ -17,7 +17,6 @@ class Users(models.Model):
 		return self.name
 
 '''
-sqlmigrate users 0001
 BEGIN;
 --
 -- Create model Users
